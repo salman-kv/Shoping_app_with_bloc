@@ -13,6 +13,7 @@ Future<List<ProductModel>> takingAllProductFromApi() async {
     return data;
   }
   else{
+    print(" product feching api error ${response.statusCode}");
     return [];
   }
 }

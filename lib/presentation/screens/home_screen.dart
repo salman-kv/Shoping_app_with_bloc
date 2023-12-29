@@ -8,6 +8,7 @@ import 'package:main_project/application/bloc/home_bloc/home_event.dart';
 import 'package:main_project/application/bloc/home_bloc/home_state.dart';
 import 'package:main_project/presentation/screens/cart_screen.dart';
 import 'package:main_project/presentation/screens/fav_screen.dart';
+import 'package:main_project/presentation/screens/product_show.dart';
 import 'package:main_project/presentation/widget/custom_snackbar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -75,69 +76,76 @@ class HomeScreen extends StatelessWidget {
               body: GridView.count(
                   crossAxisCount: 2,
                   children: List.generate(state.products.length, (index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Colors.black,
-                          )),
-                      margin: const EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.width / 6,
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(state.products[index].image),
-                            ),
-                          ),
-                          Text(state.products[index].title.length < 17
-                              ? state.products[index].title
-                              : state.products[index].title.substring(0, 17)),
-                          Text('Price : ${state.products[index].price}'),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  context.read<HomeBloc>().add(
-                                      HomePageFavouriteEvent(
-                                          product: state.products[index],
-                                          listproductModel: state.products));
-                                  coustumSnackBar(
-                                      state.products[index].fav == false
-                                          ? 'added item to favorite'
-                                          : 'remove item from fav',
-                                      context,
-                                      state.products[index].fav == false
-                                          ? Colors.green
-                                          : Colors.red);
-                                },
-                                icon: state.products[index].fav == false
-                                    ? const Icon(
-                                        Icons.favorite_border,
-                                      )
-                                    : const Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
-                                      ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
+                          return PeoductShow(product: state.products[index],index: index,);
+                        }));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.black,
+                            )),
+                        margin: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.width / 6,
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(state.products[index].image),
                               ),
-                              IconButton(
+                            ),
+                            Text(state.products[index].title.length < 17
+                                ? state.products[index].title
+                                : state.products[index].title.substring(0, 17)),
+                            Text('Price : ${state.products[index].price}'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
                                   onPressed: () {
-                                    context.read<CartBloc>().add(
-                                          AddCartEvent(
-                                              product: state.products[index]),
-                                        );
+                                    context.read<HomeBloc>().add(
+                                        HomePageFavouriteEvent(
+                                            product: state.products[index],
+                                            listproductModel: state.products));
                                     coustumSnackBar(
-                                        'added data to cart', context,Colors.green);
+                                        state.products[index].fav == false
+                                            ? 'added item to favorite'
+                                            : 'remove item from fav',
+                                        context,
+                                        state.products[index].fav == false
+                                            ? Colors.green
+                                            : Colors.red);
                                   },
-                                  icon:
-                                      const Icon(Icons.shopping_cart_outlined)),
-                            ],
-                          )
-                        ],
+                                  icon: state.products[index].fav == false
+                                      ? const Icon(
+                                          Icons.favorite_border,
+                                        )
+                                      : const Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                        ),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      context.read<CartBloc>().add(
+                                            AddCartEvent(
+                                                product: state.products[index]),
+                                          );
+                                      coustumSnackBar(
+                                          'added data to cart', context,Colors.green);
+                                    },
+                                    icon:
+                                        const Icon(Icons.shopping_cart_outlined)),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     );
                   })),

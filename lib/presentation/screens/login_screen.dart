@@ -32,7 +32,11 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             const Text('Login'),
+             const Text('Login',style: TextStyle(
+              color: Colors.purple,
+              fontWeight: FontWeight.bold,
+              fontSize: 20
+             ),),
              Padding(
                padding: const EdgeInsets.all(15.0),
                child: TextFormField(
@@ -40,6 +44,7 @@ class LoginScreen extends StatelessWidget {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'email',
+                  labelText: 'Email'
                 ),
                ),
              ),
@@ -50,6 +55,7 @@ class LoginScreen extends StatelessWidget {
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'password',
+                  labelText: 'Password'
                 ),
                ),
              ),
